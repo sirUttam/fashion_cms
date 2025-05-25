@@ -1,15 +1,40 @@
+import axios from 'axios';
 import { Field, Form, Formik, ErrorMessage } from 'formik';
 import React from 'react'
 import { BsImages } from "react-icons/bs";
 import * as yup from 'yup';
 
 const validateSchema = yup.object().shape({
-    title: yup.string().required("This field is mandatory"),
-    subtitle: yup.string().required("Enter subtitle"),
+    imagetitle: yup.string().required("This field is mandatory"),
+    imagedate: yup.string().required("Enter subtitle"),
 
 })
 
-function SaleHome() {
+function TrendsHome() {
+
+    const uploadImage = (data, setFieldValue) => {
+        try {
+            // console.log(data)
+            const formData = new FormData()
+            formData.append('images', data);
+            axios.post('http://localhost:3000/fileupload', formData).then((res) => {
+                console.log(res);
+                setFieldValue('imageid', res.data.id)
+                setFieldValue('image', res.data.imageUrl)
+
+                // updateValues('imageid', res.data.id)
+                // updateValues('image', res.data.imageUrl)
+
+
+            }).catch((err) => {
+                console.log(err);
+
+            })
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
     return (
         <div className='h-fit py-10'>
             <div className='w-11/12 mx-auto'>
@@ -28,70 +53,99 @@ function SaleHome() {
                     {/* second grid */}
                     <div className='col-span-3 w-full h-full pt-4 pb-14 rounded-sm shadow-xl'>
                         <Formik
-                        initialValues={{
-                            title: "",
-                            subtitle: "",
-                            image: ""
-                        }}
+                            initialValues={{
+                                imagetitle: '',
+                                imagedate: '',
+                                image: '',
+                                imageid: ''
 
-                        validationSchema={validateSchema}
+                            }}
 
-                        onSubmit={(values)=>(
-                            console.log(values)
-                        )}
+                            validationSchema={validateSchema}
+
+                            onSubmit={(values, {resetForm}) => {
+                                try {
+                                console.log(values)
+
+                                    axios.post('http://localhost:3000/homefashion', values).then((res) => {
+                                        console.log(res);
+                                        resetForm()
+
+                                    }).catch((err) => {
+                                        console.log(err);
+
+                                    })
+                                } catch (error) {
+                                    console.log(error);
+
+                                }
+
+                            }
+                            }
                         >
                             {
-                                ({handleSubmit, setFieldValue})=>(
+                                ({ handleSubmit, setFieldValue, values }) => (
                                     <Form onSubmit={handleSubmit} >
+                                        {/* {console.log(values,"here")} */}
                                         <div className='flex flex-col gap-6 w-11/12 mx-auto'>
-                            {/* title */}
-                            <div className='flex flex-col gap-1'>
-                                <div className='capitalize text-sm font-medium'>
-                                    Title *
-                                </div>
-                                <div>
-                                    <Field name='title' type="text" placeholder='Enter title' className='border border-gray-300 outline-0 px-4 py-2 w-full rounded-sm' />
-                                    <ErrorMessage component={'div'} name='title' className='text-red-600 text-sm'></ErrorMessage>
+                                            {/* title */}
+                                            <div className='flex flex-col gap-1'>
+                                                <div className='capitalize text-sm font-medium'>
+                                                    imageTitle *
+                                                </div>
+                                                <div>
+                                                    <Field name='imagetitle' type="text" placeholder='Enter title' className='border border-gray-300 outline-0 px-4 py-2 w-full rounded-sm' />
+                                                    <ErrorMessage component={'div'} name='imagetitle' className='text-red-600 text-sm'></ErrorMessage>
 
-                                </div>
-                            </div>
+                                                </div>
+                                            </div>
 
-                            {/* Sub title */}
-                            <div className='flex flex-col gap-1'>
-                                <div className='capitalize text-sm font-medium'>
-                                    Image title *
-                                </div>
-                                <div>
-                                    <Field name='subtitle' type="text" placeholder='Enter Subtitle' className='border border-gray-300 outline-0 px-4 py-2 w-full rounded-sm' />
-                                    <ErrorMessage component={'div'} name='subtitle' className='text-red-600 text-sm'></ErrorMessage>
+                                            {/* Sub title */}
+                                            <div className='flex flex-col gap-1'>
+                                                <div className='capitalize text-sm font-medium'>
+                                                    Imagedate *
+                                                </div>
+                                                <div>
+                                                    <Field name='imagedate' type="text" placeholder='Enter Subtitle' className='border border-gray-300 outline-0 px-4 py-2 w-full rounded-sm' />
+                                                    <ErrorMessage component={'div'} name='imagedate' className='text-red-600 text-sm'></ErrorMessage>
 
-                                </div>
-                            </div>
+                                                </div>
+                                            </div>
 
-                            {/* image */}
-                            <div className='flex flex-col gap-1'>
-                                <div className='capitalize text-sm font-medium'>
-                                    Image *
-                                </div>
-                                <div className='border  border-gray-300 rounded-sm h-fit'>
-                                    <label className='cursor-pointer' htmlFor="hero">
-                                        <div className='flex justify-center items-center text-gray-300 text-5xl h-48'>
-                                            <BsImages />
+                                            {/* image */}
+                                            <div className='flex flex-col gap-1'>
+                                                <div className='capitalize text-sm font-medium'>
+                                                    Image *
+                                                </div>
+                                                <div className='border  border-gray-300 rounded-sm h-fit'>
+                                                    <label className='cursor-pointer' htmlFor="imagehome">
+                                                        {
+                                                            values.image ?
+                                                                <img className='h-40 w-auto object-cover' src={values.image} alt="" /> :
+
+                                                                <div className='flex justify-center items-center text-gray-300 text-5xl h-48'>
+                                                                    <BsImages />
+                                                                </div>
+                                                        }
+                                                    </label>
+                                                    <input
+                                                        name='image'
+                                                        type="file"
+                                                        id='imagehome'
+                                                        className='hidden '
+                                                        onChange={(e) => {
+                                                            uploadImage(e.target.files[0], setFieldValue)
+                                                        }}
+                                                    />
+                                                    <ErrorMessage component={'div'} name='image' className='text-red-600 text-sm'></ErrorMessage>
+                                                </div>
+                                            </div>
+
+                                            {/* button submit */}
+                                            <div>
+                                                <button type='submit' className='bg-cyan-700 text-white cursor-pointer uppercase text-xs   rounded-2xl px-12 py-2.5'>Submit</button>
+                                            </div>
                                         </div>
-                                    </label>
-                                    <input
-                                     name='image' type="file" id='hero' placeholder='Enter title' className='hidden '
-                                     onChange={(e)=>{setFieldValue('image', e.target.files[0])}}
-                                     />
-                                     <ErrorMessage component={'div'} name='image' className='text-red-600 text-sm'></ErrorMessage>
-                                </div>
-                            </div>
-
-                            {/* button submit */}
-                            <div>
-                                <button type='submit' className='bg-cyan-700 text-white cursor-pointer uppercase text-xs   rounded-2xl px-12 py-2.5'>Submit</button>
-                            </div>
-                        </div>
                                     </Form>
                                 )
                             }
@@ -103,4 +157,4 @@ function SaleHome() {
     )
 }
 
-export default SaleHome;
+export default TrendsHome;

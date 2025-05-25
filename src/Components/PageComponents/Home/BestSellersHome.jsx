@@ -1,5 +1,6 @@
+import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsImages } from "react-icons/bs";
 import * as yup from 'yup';
 
@@ -8,7 +9,50 @@ const schema = yup.object().shape({
     price: yup.number().min(1, "Enter between 1-100").max(100, "Enter between 1-100").required("Enter age")
 })
 
-function HeroHome() {
+function BestSellersHome() {
+    // const [imageid, setImageid] = useState(null)
+
+    // const getbestsellerhome = () => {
+    //     try {
+    //         axios.get('http://localhost:3000/homebestseller').then((res)=>{
+    //             console.log(res)
+    //         }).catch((err)=>{
+    //             console.log(err)
+    //         })
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+
+    const uploadfile = (data, updateValue) => {
+        try {
+            const formdata = new FormData()
+            formdata.append("images", data)
+            
+            axios.post('http://localhost:3000/fileupload', formdata).then((res)=>{
+                console.log(res)
+                updateValue("imageid", res.data.id)
+                updateValue("image", res.data.imageUrl)
+
+                // if(res){
+                //     setImageid(res?.data?.id)
+                // }
+            }).catch((err)=>{
+                console.log(err);
+                
+            })
+        } catch (error) {
+         console.log(error);
+            
+        }
+    }
+
+    // useEffect(() => {
+    //   getbestsellerhome()
+    // }, [])
+    
+
     return (
         <div className=' h-fit py-10 '>
             <div className='w-11/12 mx-auto'>
@@ -30,15 +74,32 @@ function HeroHome() {
                             initialValues={{
                                 title: "",
                                 price: "",
-                                image: ""
+                                image: "",
+                                imageid: ""
                             }}
                             validationSchema={schema}
-                            onSubmit={(values) => 
-                                console.log(values)
+                            
+                            onSubmit={(values,{resetForm}) => {
+                                try {
+                                    console.log(values)
+                                    // values.image = imageid
+                                    axios.post('http://localhost:3000/homebestseller', values).then((res)=>{
+                                        console.log(res)
+                                        resetForm()
+                                    }).catch((err)=>{
+                                        console.log(err);
+                                        
+                                    })
+                                } catch (error) {
+                                    console.log(error);
+                                    
+                                }
+                            }
+                                
                             }
                         >
                             {
-                                ({ handleSubmit, setFieldValue }) => {
+                                ({ handleSubmit, setFieldValue, values }) => {
                                     return (
 
                                         <Form onSubmit={handleSubmit}>
@@ -72,17 +133,27 @@ function HeroHome() {
                                                         Image *
                                                     </div>
                                                     <div className='border  border-gray-300 rounded-sm h-fit'>
-                                                        <label className='cursor-pointer' htmlFor="hero">
+                                                        <label className='cursor-pointer' htmlFor="SellerImage">
+                                                            {
+                                                                values.image? 
+                                                                <img className='h-30 w-auto object-cover' src={values.image} alt="" />:
+
                                                             <div className='flex justify-center items-center text-gray-300 text-5xl h-48'>
                                                                 <BsImages />
                                                             </div>
+                                                            }
                                                         </label>
                                                         <input
-                                                         name="image" type="file" id='hero' placeholder='Enter title' className='hidden'
+                                                         name="image" 
+                                                         type="file" id='SellerImage' 
+                                                         className='hidden'
                                                          onChange={(e)=>{
-                                                            setFieldValue('image', e.target.files[0])
+                                                            const file = e.target.files[0]
+                                                            uploadfile(file, setFieldValue);
+                                                            
                                                          }}
                                                           />
+                                                          <ErrorMessage component={'div'} name='image' className='text-red-800 text-sm'></ErrorMessage>
                                                     </div>
                                                 </div>
 
@@ -103,4 +174,4 @@ function HeroHome() {
     )
 }
 
-export default HeroHome
+export default BestSellersHome

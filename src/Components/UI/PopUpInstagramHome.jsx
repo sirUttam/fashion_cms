@@ -4,6 +4,8 @@ import JoditEditor from 'jodit-react';
 import { Formik, Field, ErrorMessage, Form } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
+import { HiMiniBackspace } from "react-icons/hi2";
+
 
 const schema = yup.object().shape({
     title: yup.string().required("Must enter title"),
@@ -13,7 +15,7 @@ const schema = yup.object().shape({
 
 })
 
-function InstagramHome() {
+function InstagramHome({cancelInstagram, getPrevData, getData}) {
     const editor = useRef(null);
     // const [content, setContent] = useState('');
     const config = useMemo(() => ({
@@ -45,37 +47,48 @@ function InstagramHome() {
     }
 
     return (
-        <div className=' h-fit py-10'>
-            <div className='w-11/12 mx-auto'>
+        <div className=' h-screen w-full fixed top-0 overflow-y-scroll left-0 z-10 py-6 bg-black/60'>
+            <div className='flex w-8/12 bg-white p-10 mx-auto flex-col gap-10 items-center'>
 
-                <div className='grid grid-cols-4'>
-                    {/* first grid */}
-                    <div className='flex flex-col'>
-                        <div className='underline capitalize font-medium text-lg'>
-                            Home Instagram Section
-                        </div>
-                        <div className='w-4/5  text-gray-700 font-semibold text-sm'>
-                            Enter the title, Subtitle, Description and image for home Instagram section.
-                        </div>
+               <div className='flex justify-between items-center w-11/12'>
+                <div></div>
+                    <div className='text-2xl font-semibold capitalize'>
+                     Instagram Home Edit
                     </div>
+                    {/* cross icon */}
+                    <div 
+                    onClick={()=>{
+                        cancelInstagram()
+                    }}
+                    className='text-3xl cursor-pointer'><HiMiniBackspace/></div>
+               </div>
 
-                    {/* second grid */}
-                    <div className='col-span-3 w-full h-full pt-4 pb-14 rounded-sm shadow-xl'>
+                    <div className='w-full h-full rounded-sm'>
+                        {
+                        console.log(getPrevData)
+                        }
+
+                        {
+                            getPrevData?
+                            
                         <Formik
                         initialValues={{
-                            title:"",
-                            subtitle: "",
-                            description: "",
+                            title: getPrevData? getPrevData.title : "",
+                            subtitle: getPrevData? getPrevData.subtitle : "",
+                            description: getPrevData? getPrevData.description : "",
                             image:"",
-                            imageid: ""
+                            imageid: getPrevData? getPrevData.imageid.id : "",
+                            imageUrl: getPrevData? getPrevData.imageid.imageUrl : ""
                         }}
                         validationSchema={schema}
                         
                         onSubmit={(values, {resetForm})=>{
                             console.log(values)
                             try {
-                                axios.post('http://localhost:3000/instagramhome', values).then((response)=>{
-                                    console.log(response);
+                                axios.patch(`http://localhost:3000/instagramhome/${getPrevData && getPrevData.id}`, values).then((response)=>{
+                                    // console.log(response);
+                                    getData()
+                                    cancelInstagram()
                                     resetForm()
                                     
                                 }).catch((err)=>{
@@ -88,9 +101,7 @@ function InstagramHome() {
                             }
                             
                         }
-                        }
-
-                        >
+                        }>
                             
                             {
                                 ({handleSubmit, setFieldValue,values}) => (
@@ -146,8 +157,8 @@ function InstagramHome() {
                                                 <div className='border  border-gray-300 rounded-sm h-fit'>
                                                     <label className='cursor-pointer' htmlFor="imageId">
                                                         {
-                                                            values.image?
-                                                            <img className='h-40 w-auto object-cover' src={values.image} alt="" />:
+                                                            values.imageUrl?
+                                                            <img className='h-40 w-auto object-cover' src={values.imageUrl} alt="" />:
 
                                                         <div className='flex justify-center items-center text-gray-300 text-5xl h-48'>
                                                             <BsImages />
@@ -168,17 +179,31 @@ function InstagramHome() {
                                                 </div>
                                             </div>
 
-                                            {/* button submit */}
-                                            <div>
-                                                <button type='submit' className='bg-cyan-700 text-white cursor-pointer uppercase text-xs   rounded-2xl px-12 py-2.5'>Submit</button>
+                                            {/* buttons */}
+                                            <div className='flex gap-4'>
+                                                {/* edit button */}
+                                                <button 
+                                                onClick={()=>{
+
+                                                }}
+                                                type='submit' className='bg-cyan-700 text-white cursor-pointer uppercase text-xs   rounded-2xl px-12 py-2.5'>edit</button>
+
+                                                {/* cancel button */}
+                                                <button 
+                                                onClick={()=>{
+                                                    cancelInstagram()
+                                                }}
+                                                type='submit' className='bg-cyan-700 text-white cursor-pointer uppercase text-xs   rounded-2xl px-12 py-2.5'>cancel</button>
                                             </div>
                                         </div>
                                     </Form>
                                 )
                             }
                         </Formik>
+                        :
+                        <div>Loading...</div>
+                        }
                     </div>
-                </div>
             </div>
         </div>
     )

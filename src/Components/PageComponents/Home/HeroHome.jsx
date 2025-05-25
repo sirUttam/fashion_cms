@@ -12,7 +12,7 @@ const schema = yup.object().shape({
     // image: yup.string()
 })
 function HeroHome() {
-  const [data,setData]= useState(null)
+    // const [data, setData] = useState(null)
 
 
     const editor = useRef(null);
@@ -23,6 +23,33 @@ function HeroHome() {
     }),
         []
     );
+
+
+    // setFieldValue => UPDATE FORMS VALUES
+
+    //here e.target.files[0] is passed to data and setFieldValue to updateValues from the image input part (below)
+    const fileuploadHero = (data, updateValue) => {
+        // console.log(data)
+        try {
+            const formdata = new FormData();
+            formdata.append("images", data); //images named fromed backend
+
+            axios.post('http://localhost:3000/fileupload', formdata).then(res => {
+
+                console.log(res)
+                updateValue('imageid', res.data.id)
+
+                updateValue('image', res.data.imageUrl)
+
+            }).catch(err => {
+                console.log(err)
+            })
+
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
     return (
         <div className=' h-fit py-10'>
             <div className='flex w-11/12 mx-auto flex-col gap-10'>
@@ -47,20 +74,23 @@ function HeroHome() {
                                 title: "",
                                 subtitle: "",
                                 description: "",
-                                image: ""
+                                image: "",
+                                imageid: ''
                             }}
                             validationSchema={schema}
-                            onSubmit={(values,{resetForm}) =>{
+                            onSubmit={(values, { resetForm }) => {
+                                console.log(values)
                                 try {
-                                    axios.post('http://localhost:3000/homeherosection',values).then(res=>{
+                                    axios.post('http://localhost:3000/homeherosection', values).then(res => {
                                         console.log(res)
                                         resetForm()
-                                    }).catch(err=>{
+                                    }).catch(err => {
                                         console.log(err)
                                     })
                                 } catch (error) {
                                     console.log(error)
-                                }}
+                                }
+                            }
 
                             }
                         >
@@ -74,7 +104,7 @@ function HeroHome() {
                             </Formik> */}
 
 
-                            {({ handleSubmit, setFieldValue,values }) => {
+                            {({ handleSubmit, setFieldValue, values }) => {
                                 return (
                                     <Form onSubmit={handleSubmit}>
                                         <div className='flex flex-col gap-6 w-11/12 mx-auto'>
@@ -126,18 +156,23 @@ function HeroHome() {
                                                     Image *
                                                 </div>
                                                 <div className='border  border-gray-300 rounded-sm h-fit'>
-                                                    <label className='cursor-pointer' htmlFor="hero">
-                                                        <div className='flex justify-center items-center text-gray-300 text-5xl h-48'>
-                                                            <BsImages />
-                                                        </div>
+                                                    <label className='cursor-pointer h-48' htmlFor="hero">
+                                                        {
+                                                            values.image ?
+                                                                <img className='h-48' src={values.image} /> :
+
+                                                                <div className='flex justify-center items-center text-gray-300 text-5xl h-full'>
+                                                                    <BsImages />
+                                                                </div>
+                                                        }
                                                     </label>
                                                     <input name='image'
-                                                    multiple
-                                                     onChange={(e) => {
-                                                        // console.log(e.target.files[0])
-                                                        setFieldValue('image', e.target.files[0])
-                                                    }} 
-                                                    type="file" id='hero' placeholder='Enter title' className='hidden ' />
+                                                        onChange={(e) => {
+                                                            // console.log(e.target.files[0])
+                                                            fileuploadHero(e.target.files[0], setFieldValue)
+                                                            // setFieldValue('image', e.target.files[0])
+                                                        }}
+                                                        type="file" id='hero' placeholder='Enter title' className='hidden ' />
                                                     <ErrorMessage name='image' component={'div'} className='text-red-600' />
                                                 </div>
                                             </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
+import SectionLayout from './SectionLayout';
 function Header() {
     const underline = useLocation();
     const navArr = [
@@ -14,10 +15,12 @@ function Header() {
         }, {
             link: "/shop",
             navItem: "Shop",
-        }, {
-            link: "/pages",
-            navItem: "Pages",
-        }, {
+        },
+        //  {
+        //     link: "/pages",
+        //     navItem: "Pages",
+        // }, 
+        {
             link: "/blog",
             navItem: "Blog",
         }, {
@@ -60,9 +63,11 @@ function Header() {
 
                 </div>
 
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col gap-4'>
                     <div className='text-xl underline'>Section Layout</div>
-                    <div>hello</div>
+                    <div className='flex flex-col gap-2'>
+                        <SectionLayout/>
+                    </div>
                 </div>
                         <button className='transition-all duration-300 delay-75 ease-in-out py-2.5 text-sm px-10 cursor-pointer rounded-3xl bg-white text-[#1F2937] font-medium hover:scale-105 hover:bg-transparent hover:text-white hover:border'>
                         Admin LogIn

@@ -1,29 +1,17 @@
 import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useEffect, useState } from 'react'
-import { BsImage, BsImages } from "react-icons/bs";
+import { BsImages } from "react-icons/bs";
 import * as yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
+import { HiMiniBackspace } from "react-icons/hi2";
+
 
 const schema = yup.object().shape({
     title: yup.string().min(4, "Input at least 4 characters").required("This field is required")
 })
 
-function ContainerHome() {
-    // const [imageid, setimageid] = useState(null)
-
-    // const gethomecontainer = () => {
-    //     try {
-    //         axios.get('http://localhost:3000/homecontainer').then(res => {
-    //             console.log(res)
-    //         }).catch(err => {
-    //             console.log(err)
-    //         })
-    //     } catch (error) {
-    //         console.log(error)
-    //     }   
-    // }
-
+function ContainerHome({cancelContainer,prevdata,getDataAgain}) {
+ 
     const uploadfiles = (data, updateValue) => {
         try {
             const formdata = new FormData()
@@ -32,11 +20,8 @@ function ContainerHome() {
             axios.post('http://localhost:3000/fileupload', formdata).then(res => {
                 console.log(res)
                 updateValue('imageid', res.data.id)
-                updateValue('imageContainer', res.data.imageUrl)
+                updateValue('imageUrl', res.data.imageUrl)
 
-                // if (res) {
-                //     setimageid(res?.data?.id)
-                // }
 
             }).catch(err => {
                 console.log(err)
@@ -46,45 +31,43 @@ function ContainerHome() {
         }
     }
 
-
-    // useEffect(() => {
-    //     gethomecontainer()
-    // }, [])
-
+    
 
     return (
-        <div className='h-fit py-10'>
-            <div className='w-11/12 mx-auto'>
+        <div className='h-screen fixed top-0 bg-black/40 z-10 left-0 w-full py-6'>
 
-                <div className='grid grid-cols-4'>
-                    {/* first grid */}
-                    <div className='flex flex-col'>
-                        <div className='underline capitalize font-medium text-lg'>
-                            Home Container Section
-                        </div>
-                        <div className='w-4/5 text-gray-700 text-sm font-semibold'>
-                            (Enter the title and image for home container section.)
-                        </div>
+                  <div className='flex flex-col w-8/12 bg-white p-10 h-full mx-auto items-center gap-16'>
+                  <div className='flex items-center justify-between w-11/12 mx-auto'>
+
+                    <div></div>
+                    <div className='text-xl capitalize font-semibold underline'>
+                        Container Home
                     </div>
-
-                    {/* second grid */}
-                    <div className='col-span-3 w-full h-full pt-4 pb-14 rounded-sm shadow-xl'>
+                    <div 
+                    onClick={()=>{
+                        cancelContainer()
+                    }}
+                    className='text-3xl cursor-pointer'><HiMiniBackspace/></div>
+                  </div>
+                      <div className='w-full h-full rounded-sm'>
+                        {console.log(prevdata,"prev")}
+                        {
+                            prevdata?
                         <Formik
                             initialValues={{
-                                title: "",
+                                title: prevdata? prevdata.title : "",
                                 image: "",
-                                imageid: ""
+                                imageUrl:prevdata? prevdata.imageid.imageUrl : "",
+                                imageid: prevdata? prevdata.imageid.id : ""
                             }}
                             validationSchema={schema}
                             onSubmit={(values, { resetForm }) => {
                                 try {
-                                    // const formData = new FormData();
-                                    // formData.append("title", values.title);
-                                    // formData.append("image", values.image);
-                                    
-                                    // values.image = imageid
-                                    axios.post('http://localhost:3000/homecontainer', values).then((res) => {
+                                  
+                                    axios.patch(`http://localhost:3000/homecontainer/${prevdata && prevdata.id}`, values).then((res) => {
                                         console.log(res);
+                                        cancelContainer()
+                                        getDataAgain()
                                         resetForm()
                                         toast.success('Submitted Successfully!', {
                                             position: "top-right",
@@ -125,7 +108,7 @@ function ContainerHome() {
                                 return (
 
                                     <Form onSubmit={handleSubmit}>
-                                        <div className='flex flex-col gap-6 w-11/12 mx-auto'>
+                                        <div className='flex flex-col gap-6'>
                                             {/* title */}
                                             <div className='flex flex-col gap-1'>
                                                 <div className='capitalize text-sm font-medium'>
@@ -146,8 +129,8 @@ function ContainerHome() {
                                                 <div className='border  border-gray-300 rounded-sm h-fit'>
                                                     <label className='cursor-pointer' htmlFor="images">
                                                         {
-                                                            values.images?
-                                                                <img src={values.images} alt="" /> : 
+                                                            values.imageUrl?
+                                                                <img className='h-40 w-auto object-contain' src={values.imageUrl} alt="" /> : 
                                                              <div className='flex justify-center items-center text-gray-300 text-5xl h-48'>
                                                             <BsImages />
                                                         </div>
@@ -170,17 +153,25 @@ function ContainerHome() {
                                             </div>
 
                                             {/* button submit */}
-                                            <div>
-                                                <button type='submit' className='bg-cyan-700 text-white cursor-pointer uppercase text-xs   rounded-2xl px-12 py-2.5'>Submit</button>
+                                            <div className='flex gap-4'>
+                                                {/* edit button */}
+                                                <button type='submit' className='bg-cyan-700 text-white cursor-pointer uppercase text-xs   rounded-2xl px-12 py-2.5'>edit</button>
+
+                                                {/* cancel button */}
+                                                <button 
+                                                onClick={()=>{cancelContainer()}}
+                                                type='submit' className='bg-cyan-700 text-white cursor-pointer uppercase text-xs   rounded-2xl px-12 py-2.5'>Cancel</button>
                                             </div>
                                         </div>
                                     </Form>
                                 )
                             }}
-                        </Formik>
+                        </Formik>:
+                        <div>loading.........</div>
+                        }
                     </div>
-                </div>
-            </div>
+                  </div>
+                  
             <ToastContainer/>
         </div>
     )
