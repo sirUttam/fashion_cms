@@ -1,10 +1,11 @@
 import axios from 'axios'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import JoditEditor from 'jodit-react';
-import React, { useMemo, useRef } from 'react'
+import React, { useContext, useMemo, useRef } from 'react'
 import { BsImages } from 'react-icons/bs';
 import * as yup from 'yup';
 import { HiMiniBackspace } from "react-icons/hi2";
+import { HeroHomeContext } from '../HOC/Context Api/CreateContext';
 
 
 const schema = yup.object().shape({
@@ -15,6 +16,8 @@ const schema = yup.object().shape({
 })
 
 function PopUpBoxEditHero({cancelButton, prevDataHero, getData}) {
+  const {name}=useContext(HeroHomeContext)
+  // console.log(data,"context ho hai")
   const editor = useRef(null);
   // const [content, setContent] = useState('');
   const config = useMemo(() => ({
@@ -54,7 +57,7 @@ function PopUpBoxEditHero({cancelButton, prevDataHero, getData}) {
  <div className='flex w-11/12 mx-auto justify-between items-center'>
 <div></div>
    <div className='text-xl capitalize font-semibold underline'>
-    Hero Home
+    Hero Home {name}
   </div>
 {/* cross icon */}
   <div

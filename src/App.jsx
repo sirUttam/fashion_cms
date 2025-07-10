@@ -14,6 +14,8 @@ import TableHeroHome from './Components/Tables/TableHeroHome'
 import TableContainerHome from './Components/Tables/TableContainerHome'
 import BestSellerHomeTable from './Components/Tables/BestSellerHomeTable'
 import InstagramHomeTable from './Components/Tables/InstagramHomeTable'
+import ViewHeroHome from './Components/UI/ViewHeroHome'
+import CreateContextAPi from './Components/HOC/Context Api/CreateContext'
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
       <div>
         <Routes>
           {/* <Route element={<ProtectedRoute />}> */}
+          <Route path='/login' element={<Login />} />
 
             <Route element={<Layout />}>
               <Route path='/companyInfo' element={<CompanyInfo />} />
@@ -30,6 +33,10 @@ function App() {
               <Route path='/blog' element={<Blog />} />
               <Route path='/contact' element={<Contact />} />
               <Route path='/herohometable' element={<TableHeroHome/>} />
+              <Route path='/herohometable/:id' element={<CreateContextAPi>
+<ViewHeroHome />
+                </CreateContextAPi>} />
+
               <Route path='/containerhometable' element={<TableContainerHome/>} />
               <Route path='/bestsellerhometable' element={<BestSellerHomeTable/>} />
               <Route path='/instagramhometable' element={<InstagramHomeTable/>} />
@@ -41,7 +48,6 @@ function App() {
             </Route>
           {/* </Route> */}
           
-          <Route path='/login' element={<Login />} />
 
         </Routes>
       </div>

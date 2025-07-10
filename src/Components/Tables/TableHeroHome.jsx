@@ -3,34 +3,26 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import PopUpBox from '../UI/PopUpBox'
 import PopUpBoxEditHero from '../UI/PopUpBoxEditHero'
+// import ViewHeroHome from '../UI/ViewHeroHome'
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { CiEdit } from "react-icons/ci";
+import { MdPreview } from "react-icons/md";
+import { useNavigate } from 'react-router-dom'
+import CreateContextAPi, { HeroHomeContext } from '../HOC/Context Api/CreateContext'
 
-function TableHeroHome({}) {
+
+function TableHeroHome() {
     const [editOption, setEditOption] = useState(false)
-    const [HeroHome, setHeroHome] = useState([])
     const [popup, setpopup] = useState(false)
     const [deleteid, setdeleteid] = useState(null)
     const [valHero, setvalHero] = useState(null)
-    
-    const getData = () => {
-        try {
-            axios.get('http://localhost:3000/homeherosection').then(res => {
-                // console.log(res)
-                setHeroHome([...res.data])
-            }).catch(err => {
-                console.log(err)
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    useEffect(() => {
-        getData()
-    }, [])
+    // const [View, setView] = useState(false)
+    const navigate =useNavigate()
+ 
 
 
     const data = [
-        { title: "S.N" },
+        { title: "ID" },
         { title: "title" },
         { title: "subtitle" },
         { title: "description" },
@@ -40,24 +32,16 @@ function TableHeroHome({}) {
     ]
 
 
-        const DeleteData = () => {
-        try {
-            axios.delete(`http://localhost:3000/homeherosection/${deleteid}`).then(res => {
-                // console.log(res)
-                // setHeroHome([...res.data])
-                setpopup(false)
-                getData()
-            }).catch(err => {
-                console.log(err)
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    }
     return (
-        <div className='flex flex-col items-center gap-4'>
+      <div>
+          <CreateContextAPi>
+
+  <HeroHomeContext.Consumer>
+    {({DeleteData,HeroHome})=>{
+        return       <div className='flex flex-col items-center pt-20 gap-4'>
             { editOption && <PopUpBoxEditHero cancelButton ={()=>{setEditOption(false)}} prevDataHero={valHero} getData={()=>getData()} /> }
-           {popup && <PopUpBox stopPopUpProps={()=>setpopup(false)}  deleteProps={()=>DeleteData()} />}
+           {popup && <PopUpBox stopPopUpProps={()=>setpopup(false)}  deleteProps={()=>DeleteData(deleteid,setpopup)} />}
+            {/* {View&& <ViewHeroHome stopView={()=>setView(false)} />} */}
 
             <div className='text-xl font-semibold capitalize underline'>
                 HeroHome Table
@@ -81,27 +65,41 @@ function TableHeroHome({}) {
                                     <td className='py-4 px-4 border-2 border-black'>{val.id}</td>
                                     <td className='py-4 border-2 border-black'>{val.title}</td>
                                     <td className='py-4 border-2 border-black'>{val.subtitle}</td>
-                                    <td className='py-4 border-2 border-black'>{val.description}</td>
+                                    <td className='py-4 border-2 border-black'>
+                                        <div dangerouslySetInnerHTML={{__html:val.description}} className=' line-clamp-6 w-64' />
+                                    </td>
                                     <td className='py-4 border-2 border-black'>
                                         { val.imageid?.imageUrl? <img className='h-20 w-auto object-contain' src={val.imageid.imageUrl} /> : "-" }
                                     </td>
-                                    <td className='py-4 flex gap-2 justify-center items-center'>
+                                    <td className='py-4 px-2 flex justify-center items-center gap-2'>
 
-                                        {/* edit button */}
+                                         {/* edit button */}
                                         <button
                                         onClick={()=>{
                                             setvalHero(val)
                                             setEditOption(true)}
                                         }
-                                         className='bg-[#1F2937] text-white w-fit uppercase text-sm px-10 font-medium transition-all ease-in-out duration-300 py-2 rounded-lg cursor-pointer hover:shadow-md hover:scale-105'>edit</button>
+                                         className='bg-[#1F2937] text-white w-fit uppercase text-sm px-3 font-medium transition-all ease-in-out duration-300 py-2 rounded-lg cursor-pointer hover:shadow-md hover:scale-105'><CiEdit/></button>
 
                                         {/* delete button */}
-                                        <button className='bg-[#1F2937] text-white w-fit uppercase text-sm px-8 font-medium transition-all ease-in-out duration-300 py-2 rounded-lg cursor-pointer hover:shadow-md hover:scale-105' 
+                                        <button className='bg-[#1F2937] text-white w-fit uppercase text-sm px-3 font-medium transition-all ease-in-out duration-300 py-2 rounded-lg cursor-pointer hover:shadow-md hover:scale-105' 
                                         onClick={()=>{
                                             setdeleteid(val.id)
                                             setpopup(true)
-                                        }}>delete</button>
+                                        }}><RiDeleteBin5Line/></button>
 
+                                       {/* view button */}
+                                       <button 
+                                       onClick={()=>{
+                                        navigate({
+                                            pathname:`/herohometable/${val.id}`,
+                                            search:val.title,
+                                            // hash:val.subtitle
+                                            
+                                        })
+                                       }}
+                                       className='bg-[#1F2937] text-white w-fit uppercase text-sm px-3 font-medium transition-all ease-in-out duration-300 py-2 rounded-lg cursor-pointer hover:shadow-md hover:scale-105' 
+                                     ><MdPreview/></button>
                                     </td>
 
                                 </tr>
@@ -111,6 +109,10 @@ function TableHeroHome({}) {
                 </tbody>
             </table>
         </div>
+    }}
+  </HeroHomeContext.Consumer>
+        </CreateContextAPi>
+      </div>
     )
 }
 

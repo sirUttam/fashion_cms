@@ -1,10 +1,11 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { BsImages } from "react-icons/bs";
 import JoditEditor from 'jodit-react'
 import * as yup from 'yup';
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import axios from 'axios';
-
+import Loading from '../../UI/Loading';
+ import { ToastContainer, toast } from 'react-toastify';
 const schema = yup.object().shape({
     title: yup.string().min(6, "this is too short").required("this is required"),
     subtitle: yup.string().required('Enter subTitle'),
@@ -13,6 +14,7 @@ const schema = yup.object().shape({
 })
 function HeroHome() {
     // const [data, setData] = useState(null)
+    const [Loadingherohome, setLoadingherohome] = useState(false)
 
 
     const editor = useRef(null);
@@ -50,8 +52,25 @@ function HeroHome() {
             console.log(error)
         }
     }
+
+    useEffect(() => {
+      let interval;
+
+      if(Loadingherohome){
+        interval=setTimeout(() => {
+            setLoadingherohome(false)
+            toast.success('data has been submitted')
+        }, 3000);
+      }
+    
+      return () => {
+        clearTimeout(interval)
+      }
+    }, [Loadingherohome])
+    
     return (
         <div className=' h-fit py-10'>
+           <ToastContainer/>
             <div className='flex w-11/12 mx-auto flex-col gap-10'>
                 <div className='text-2xl font-semibold '>
                     Home Section
@@ -84,6 +103,7 @@ function HeroHome() {
                                     axios.post('http://localhost:3000/homeherosection', values).then(res => {
                                         console.log(res)
                                         resetForm()
+                                        setLoadingherohome(true)
                                     }).catch(err => {
                                         console.log(err)
                                     })
@@ -179,7 +199,11 @@ function HeroHome() {
 
                                             {/* button submit */}
                                             <div>
+                                                 {
+                Loadingherohome?<Loading />:
+
                                                 <button type='submit' className='bg-cyan-700 text-white cursor-pointer uppercase text-xs   rounded-2xl px-12 py-2.5'>Submit</button>
+            }
                                             </div>
                                         </div>
                                     </Form>

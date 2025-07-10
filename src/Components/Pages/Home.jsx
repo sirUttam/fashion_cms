@@ -5,10 +5,6 @@ import BestSellersHome from '../PageComponents/Home/BestSellersHome'
 import InstagramHome from '../PageComponents/Home/InstagramHome'
 import TrendsHome from '../PageComponents/Home/TrendsHome'
 
-
-
-
-
 function Home() {
   return (
     <div>

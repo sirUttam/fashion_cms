@@ -30,10 +30,10 @@ function Header() {
     ]
     return (
         <div className='bg-[#1F2937] w-full text-white h-full'>
-            <nav className='fixed top-0 left-0 flex flex-col gap-14 py-6 px-8'>
+            <nav className='fixed top-0 left-0 z-20 flex flex-col gap-10 py-6 px-8'>
                 <div className='text-3xl flex gap-1 items-center font-bold'>
-                    <span>Git</span>
-                    <span className='bg-[#ffa31a] px-1 text-2xl rounded-sm text-black'>Hub</span>
+                    <span>Fashion</span>
+                    <span className='bg-white px-1 text-2xl rounded-sm text-black'>CMS</span>
                 </div>
 
                 <div className='flex flex-col gap-2 font-normal text-base'>
@@ -64,7 +64,7 @@ function Header() {
                 </div>
 
                 <div className='flex flex-col gap-4'>
-                    <div className='text-xl underline'>Section Layout</div>
+                    <div className='text-xl underline'>Edit & Delete</div>
                     <div className='flex flex-col gap-2'>
                         <SectionLayout/>
                     </div>

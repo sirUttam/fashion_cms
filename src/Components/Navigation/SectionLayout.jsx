@@ -25,7 +25,7 @@ function SectionLayout() {
                     <div key={i}>
                         <div className='group w-fit'>
                             <div className=''>
-                            <Link className={` translate-full duration-500 ease-in-out ${val.link === locationPath ? "font-bold text-lg" : ""} `} to= {val.link}>
+                            <Link className={` translate-full duration-300 ease-in-out ${val.link === locationPath ? "font-bold text-lg" : ""} `} to= {val.link}>
                             {val.name}
                             </Link>
                         </div>

@@ -29,7 +29,7 @@ function InstagramHomeTable() {
 
 
     const data = [
-        { title: "S.N" },
+        { title: "ID" },
         { title: "title" },
         { title: "subtitle" },
         { title: "description" },
@@ -51,7 +51,7 @@ function InstagramHomeTable() {
         }
     }
     return (
-        <div className='flex flex-col items-center gap-4'>
+        <div className='flex flex-col items-center pt-20 gap-4'>
             { popUpInstagram && <PopUpInstagramHome cancelInstagram={()=>{setPopUpInstagram(false)}} getPrevData={valInstagram} getData={()=>{getData()}} /> }
             {popUp && <PopUpBox stopPopUpProps={() => { setpopUp(false) }} deleteProps={() => { DeleteData() }} />}
             <div className='text-xl font-semibold capitalize underline'>

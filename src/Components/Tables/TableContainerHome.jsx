@@ -46,7 +46,7 @@ function TableContainerHome() {
     }
 
     const data = [
-        { title: "S.N" },
+        { title: "ID" },
         { title: "title" },
         { title: "image" },
         { title: "action" },
@@ -54,7 +54,7 @@ function TableContainerHome() {
 
     ]
     return (
-        <div className='flex flex-col items-center gap-4'>
+        <div className='flex flex-col items-center pt-20 gap-4'>
             { editContainer && <PopUpEditContainerHome cancelContainer={()=>{ seteditContainer(false) }} prevdata={valState} getDataAgain={()=>{getData()}} /> }
             {popupcontainer && <PopUpBox stopPopUpProps={() => { setpopupcontainer(false) }} deleteProps={() => DeleteData()}
 

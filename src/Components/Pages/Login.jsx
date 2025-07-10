@@ -31,6 +31,9 @@ function Login() {
                                     className="w-full p-3 border border-gray-300 rounded-md mt-1 focus:ring-2 focus:ring-green-500 focus:outline-none"
                                 />
                             </div>
+                            <div>
+                                Forget Password? <a className='underline' href="#">Click here</a>
+                            </div>
 
                             <div className="mt-6">
                                 <button

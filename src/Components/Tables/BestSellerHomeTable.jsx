@@ -30,7 +30,7 @@ function BestSellerHomeTable() {
     
 
     const data = [
-        { title: "S.N" },
+        { title: "ID" },
         { title: "title" },
         { title: "price" },
         { title: "image" },
@@ -53,7 +53,7 @@ function BestSellerHomeTable() {
 
 
     return (
-        <div className='flex flex-col items-center gap-4'>
+        <div className='flex flex-col items-center pt-20 gap-4'>
             { editBestSeller && <PopUpEditContainerHome cancelBestSeller={()=>{setEditBestSeller(false)}} prevDataBestSeller={valBestSeller} getDataAgain={()=>{getData()}} /> }
             {popupbestseller && <PopUpBox stopPopUpProps={()=>{setpopupbestseller(false)}} deleteProps={()=>{DeleteData()}} />}
             <div className='text-xl font-semibold capitalize underline'>
