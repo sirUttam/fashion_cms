@@ -24,7 +24,7 @@ function ViewHeroHome({  }) {
 
   const getData = () => {
     try {
-      axios.get(`http://localhost:3000/homeherosection/${params.id}`).then(res => {
+      axios.get(`http://localhost:4000/homeherosection/${params.id}`).then(res => {
         console.log(res)
         setdata([...res.data])
       }).catch(err => {

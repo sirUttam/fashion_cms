@@ -25,29 +25,30 @@ function App() {
           {/* <Route element={<ProtectedRoute />}> */}
           <Route path='/login' element={<Login />} />
 
-            <Route element={<Layout />}>
-              <Route path='/companyInfo' element={<CompanyInfo />} />
-              <Route path='/' element={<Home />} />
-              <Route path='/shop' element={<Shop />} />
-              {/* <Route path='/pages' element={<Pages />} /> */}
-              <Route path='/blog' element={<Blog />} />
-              <Route path='/contact' element={<Contact />} />
-              <Route path='/herohometable' element={<TableHeroHome/>} />
-              <Route path='/herohometable/:id' element={<CreateContextAPi>
-<ViewHeroHome />
-                </CreateContextAPi>} />
+          <Route element={<Layout />}>
+            <Route path='/companyInfo' element={<CompanyInfo />} />
+            <Route path='/' element={<Home />} />
+            <Route path='/shop' element={<Shop />} />
+            {/* <Route path='/pages' element={<Pages />} /> */}
+            <Route path='/blog' element={<Blog />} />
+            <Route path='/contact' element={<Contact />} />
+            <Route path='/herohometable' element={<TableHeroHome />} />
 
-              <Route path='/containerhometable' element={<TableContainerHome/>} />
-              <Route path='/bestsellerhometable' element={<BestSellerHomeTable/>} />
-              <Route path='/instagramhometable' element={<InstagramHomeTable/>} />
-              <Route path='/trendhometable' element={<TrendHomeTable/>} />
+            <Route path='/herohometable/:id' element={<CreateContextAPi>
+              <ViewHeroHome />
+            </CreateContextAPi>} />
+
+            <Route path='/containerhometable' element={<TableContainerHome />} />
+            <Route path='/bestsellerhometable' element={<BestSellerHomeTable />} />
+            <Route path='/instagramhometable' element={<InstagramHomeTable />} />
+            <Route path='/trendhometable' element={<TrendHomeTable />} />
 
 
 
 
-            </Route>
+          </Route>
           {/* </Route> */}
-          
+
 
         </Routes>
       </div>

@@ -1,47 +1,24 @@
 import axios from 'axios'
 import React, { createContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Getdata from '../custome/Getdata';
+import DeleteReq from '../custome/DeleteReq';
 
 export const HeroHomeContext=createContext()
 
 function CreateContextAPi({children}) {
-       const [HeroHome, setHeroHome] = useState([])
        const navigate = useNavigate();
+
+        const datas=Getdata('homeherosection')
+        console.log(datas)
+
+        const delData =(deleteid,setpopup) => DeleteReq(`homeherosection/${deleteid}`,setpopup)
+      
+        // we need delete for both delete in table and delete in view icon. So delete function is implemented here to pass it in two components instead of writing in both
         
-        const getData = () => {
-            try {
-                axios.get('http://localhost:3000/homeherosection').then(res => {
-                    // console.log(res)
-                    setHeroHome([...res.data])
-                }).catch(err => {
-                    console.log(err)
-                })
-            } catch (error) {
-                console.log(error)
-            }
-        }
-    
-        useEffect(() => {
-            getData()
-        }, [])
-        const DeleteData = (deleteid,setpopup) => {
-        try {
-            axios.delete(`http://localhost:3000/homeherosection/${deleteid}`).then(res => {
-                console.log(res)
-                // setHeroHome([...res.data])
-                // setpopup(false)
-                navigate('/herohometable')
-                getData()
-            }).catch(err => {
-                console.log(err)
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
   return (
-    <HeroHomeContext.Provider value={{DeleteData,HeroHome,name:'here'}}>
+    <HeroHomeContext.Provider value={{ delData , HeroHome:datas }}>
         {children}
     </HeroHomeContext.Provider>
   )

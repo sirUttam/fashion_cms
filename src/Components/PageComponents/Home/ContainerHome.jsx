@@ -29,7 +29,7 @@ function ContainerHome() {
             const formdata = new FormData()
 
             formdata.append("images", data)
-            axios.post('http://localhost:3000/fileupload', formdata).then(res => {
+            axios.post('http://localhost:4000/fileupload', formdata).then(res => {
                 console.log(res)
                 updateValue('imageid', res.data.id)
                 updateValue('imageContainer', res.data.imageUrl)
@@ -83,7 +83,7 @@ function ContainerHome() {
                                     // formData.append("image", values.image);
                                     
                                     // values.image = imageid
-                                    axios.post('http://localhost:3000/homecontainer', values).then((res) => {
+                                    axios.post('http://localhost:4000/homecontainer', values).then((res) => {
                                         console.log(res);
                                         resetForm()
                                         toast.success('Submitted Successfully!', {
@@ -147,7 +147,7 @@ function ContainerHome() {
                                                     <label className='cursor-pointer' htmlFor="images">
                                                         {
                                                             values.images?
-                                                                <img src={values.images} alt="" /> : 
+                                                                <img src={values.image} alt="" /> : 
                                                              <div className='flex justify-center items-center text-gray-300 text-5xl h-48'>
                                                             <BsImages />
                                                         </div>

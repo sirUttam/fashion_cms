@@ -31,9 +31,9 @@ function PopUpBoxEditHero({cancelButton, prevDataHero, getData}) {
         // console.log(data)
         try {
             const formdata = new FormData();
-            formdata.append("images", data); //images named fromed backend
+            formdata.append("images", data); //images named from   backend
 
-            axios.post('http://localhost:3000/fileupload', formdata).then(res => {
+            axios.post('http://localhost:4000/fileupload', formdata).then(res => {
 
                 console.log(res)
                 updateValue('imageid', res.data.id)
@@ -83,7 +83,7 @@ function PopUpBoxEditHero({cancelButton, prevDataHero, getData}) {
           onSubmit={(values, { resetForm }) => {
             console.log(values)
             try {
-              axios.patch(`http://localhost:3000/homeherosection/${prevDataHero && prevDataHero.id}`, values).then(res => {
+              axios.patch(`http://localhost:4000/homeherosection/${prevDataHero && prevDataHero.id}`, values).then(res => {
                 console.log(res)
                 resetForm()
                 getData()    // this helps such that we do not need to reload the browser after editing
