@@ -35,7 +35,7 @@ function TableContainerHome() {
     const DeleteData = () => {
         try {
 
-            axios.delete(`http://localhost:3000/homecontainer/${deleteid}`).then((res) => {
+            axios.delete(`https://fashion-backend-4y4z.vercel.app/homecontainer/${deleteid}`).then((res) => {
                 setpopupcontainer(false)
                 getData()
             }).catch((err) => {

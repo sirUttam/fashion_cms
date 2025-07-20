@@ -30,7 +30,7 @@ function InstagramHome({cancelInstagram, getPrevData, getData}) {
         try {
         const formData = new FormData();
         formData.append('images', data);
-            axios.post('http://localhost:3000/fileupload', formData).then((res)=>{
+            axios.post('https://fashion-backend-4y4z.vercel.app/fileupload', formData).then((res)=>{
                 console.log(res);
                 updateValue('imageid', res.data.id)
                 updateValue('image', res.data.imageUrl)
@@ -85,7 +85,7 @@ function InstagramHome({cancelInstagram, getPrevData, getData}) {
                         onSubmit={(values, {resetForm})=>{
                             console.log(values)
                             try {
-                                axios.patch(`http://localhost:3000/instagramhome/${getPrevData && getPrevData.id}`, values).then((response)=>{
+                                axios.patch(`https://fashion-backend-4y4z.vercel.app/instagramhome/${getPrevData && getPrevData.id}`, values).then((response)=>{
                                     // console.log(response);
                                     getData()
                                     cancelInstagram()

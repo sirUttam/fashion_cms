@@ -7,7 +7,7 @@ function Getdata(url) {
 
       const getData = () => {
             try {
-                axios.get(`http://localhost:4000/${url}`).then(res => {
+                axios.get(`https://fashion-backend-4y4z.vercel.app/${url}`).then(res => {
                     // console.log(res)
                     setHeroHome([...res.data])
                 }).catch(err => {

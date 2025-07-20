@@ -24,7 +24,7 @@ function ViewHeroHome({  }) {
 
   const getData = () => {
     try {
-      axios.get(`http://localhost:4000/homeherosection/${params.id}`).then(res => {
+      axios.get(`https://fashion-backend-4y4z.vercel.app/homeherosection/${params.id}`).then(res => {
         console.log(res)
         setdata([...res.data])
       }).catch(err => {

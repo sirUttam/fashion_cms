@@ -11,7 +11,7 @@ function TrendHomeTable() {
 
     const getData = () => {
         try {
-            axios.get('http://localhost:3000/homefashion').then(res => {
+            axios.get('https://fashion-backend-4y4z.vercel.app/homefashion').then(res => {
                 // console.log(res)
                 setTrendHome([...res.data])
             }).catch(err => {
@@ -24,7 +24,7 @@ function TrendHomeTable() {
 
     const deleteData = () =>{
         try {
-            axios.delete(`http://localhost:3000/homefashion/${deleteid}`).then((res)=>{
+            axios.delete(`https://fashion-backend-4y4z.vercel.app/homefashion/${deleteid}`).then((res)=>{
                 console.log(res);
                 setPopTrend(false)
                 getData()

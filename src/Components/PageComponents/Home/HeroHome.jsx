@@ -36,7 +36,7 @@ function HeroHome() {
             const formdata = new FormData();
             formdata.append("images", data); //images named fromed backend
 
-            axios.post('http://localhost:4000/fileupload', formdata).then(res => {
+            axios.post('https://fashion-backend-4y4z.vercel.app/fileupload', formdata).then(res => {
 
                 console.log(res)
                 updateValue('imageid', res.data.id)
@@ -100,7 +100,7 @@ function HeroHome() {
                             onSubmit={(values, { resetForm }) => {
                                 console.log(values)
                                 try {
-                                    axios.post('http://localhost:4000/homeherosection', values).then(res => {
+                                    axios.post('https://fashion-backend-4y4z.vercel.app/homeherosection', values).then(res => {
                                         console.log(res)
                                         resetForm()
                                         setLoadingherohome(true)

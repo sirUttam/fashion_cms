@@ -17,7 +17,7 @@ function ContainerHome({cancelContainer,prevdata,getDataAgain}) {
             const formdata = new FormData()
 
             formdata.append("images", data)
-            axios.post('http://localhost:3000/fileupload', formdata).then(res => {
+            axios.post('https://fashion-backend-4y4z.vercel.app/fileupload', formdata).then(res => {
                 console.log(res)
                 updateValue('imageid', res.data.id)
                 updateValue('imageUrl', res.data.imageUrl)
@@ -64,7 +64,7 @@ function ContainerHome({cancelContainer,prevdata,getDataAgain}) {
                             onSubmit={(values, { resetForm }) => {
                                 try {
                                   
-                                    axios.patch(`http://localhost:3000/homecontainer/${prevdata && prevdata.id}`, values).then((res) => {
+                                    axios.patch(`https://fashion-backend-4y4z.vercel.app/homecontainer/${prevdata && prevdata.id}`, values).then((res) => {
                                         console.log(res);
                                         cancelContainer()
                                         getDataAgain()

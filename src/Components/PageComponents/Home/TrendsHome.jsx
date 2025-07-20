@@ -17,7 +17,7 @@ function TrendsHome() {
             // console.log(data)
             const formData = new FormData()
             formData.append('images', data);
-            axios.post('http://localhost:3000/fileupload', formData).then((res) => {
+            axios.post('https://fashion-backend-4y4z.vercel.app/fileupload', formData).then((res) => {
                 console.log(res);
                 setFieldValue('imageid', res.data.id)
                 setFieldValue('image', res.data.imageUrl)
@@ -67,7 +67,7 @@ function TrendsHome() {
                                 try {
                                 console.log(values)
 
-                                    axios.post('http://localhost:3000/homefashion', values).then((res) => {
+                                    axios.post('https://fashion-backend-4y4z.vercel.app/homefashion', values).then((res) => {
                                         console.log(res);
                                         resetForm()
 

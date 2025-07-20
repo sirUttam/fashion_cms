@@ -28,7 +28,7 @@ function InstagramHome() {
         try {
         const formData = new FormData();
         formData.append('images', data);
-            axios.post('http://localhost:3000/fileupload', formData).then((res)=>{
+            axios.post('https://fashion-backend-4y4z.vercel.app/fileupload', formData).then((res)=>{
                 console.log(res);
                 updateValue('imageid', res.data.id)
                 updateValue('image', res.data.imageUrl)
@@ -74,7 +74,7 @@ function InstagramHome() {
                         onSubmit={(values, {resetForm})=>{
                             console.log(values)
                             try {
-                                axios.post('http://localhost:3000/instagramhome', values).then((response)=>{
+                                axios.post('https://fashion-backend-4y4z.vercel.app/instagramhome', values).then((response)=>{
                                     console.log(response);
                                     resetForm()
                                     

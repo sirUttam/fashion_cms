@@ -30,7 +30,7 @@ function BestSellersHome() {
             const formdata = new FormData()
             formdata.append("images", data)
             
-            axios.post('http://localhost:3000/fileupload', formdata).then((res)=>{
+            axios.post('https://fashion-backend-4y4z.vercel.app/fileupload', formdata).then((res)=>{
                 console.log(res)
                 updateValue("imageid", res.data.id)
                 updateValue("image", res.data.imageUrl)
@@ -83,7 +83,7 @@ function BestSellersHome() {
                                 try {
                                     console.log(values)
                                     // values.image = imageid
-                                    axios.post('http://localhost:3000/homebestseller', values).then((res)=>{
+                                    axios.post('https://fashion-backend-4y4z.vercel.app/homebestseller', values).then((res)=>{
                                         console.log(res)
                                         resetForm()
                                     }).catch((err)=>{

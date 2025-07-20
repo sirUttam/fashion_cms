@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 function DeleteReq(url) {
     const navigate = useNavigate()
         try {
-            axios.delete(`http://localhost:4000/${url}`).then(res => {
+            axios.delete(`https://fashion-backend-4y4z.vercel.app/${url}`).then(res => {
                 console.log(res)
                 // setHeroHome([...res.data])
                 // setpopup(false)

@@ -13,7 +13,7 @@ function BestSellerHomeTable() {
 
     const getData = () => {
         try {
-            axios.get('http://localhost:3000/homebestseller').then(res => {
+            axios.get('https://fashion-backend-4y4z.vercel.app/homebestseller').then(res => {
                 // console.log(res)
                 setBestSeller([...res.data])
             }).catch(err => {
@@ -40,7 +40,7 @@ function BestSellerHomeTable() {
 
      const DeleteData = () => {
         try {
-            axios.delete(`http://localhost:3000/homebestseller/${deleteId}`).then(res => {
+            axios.delete(`https://fashion-backend-4y4z.vercel.app/homebestseller/${deleteId}`).then(res => {
                 setpopupbestseller(false)
                 getData()
             }).catch(err => {

@@ -13,7 +13,7 @@ function InstagramHomeTable() {
 
     const getData = () => {
         try {
-            axios.get(`http://localhost:3000/instagramhome`).then(res => {
+            axios.get(`https://fashion-backend-4y4z.vercel.app/instagramhome`).then(res => {
                 setInstagramHome([...res.data])
             }).catch(err => {
                 console.log(err)
@@ -40,7 +40,7 @@ function InstagramHomeTable() {
 
     const DeleteData = () => {
         try {
-            axios.delete(`http://localhost:3000/instagramhome/${deleteid}`).then(res => {
+            axios.delete(`https://fashion-backend-4y4z.vercel.app/instagramhome/${deleteid}`).then(res => {
                 setpopUp(false)
                 getData()
             }).catch(err => {
